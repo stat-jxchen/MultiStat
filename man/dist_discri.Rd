@@ -25,3 +25,26 @@ class is equal.}
 \description{
 This function do distance discrimination with Mahalanobis distance.
 }
+\examples{
+library(dplyr)
+library(purrr)
+breast_rmna <- breast \%>\%
+na.omit() \%>\%
+mutate(class = as.factor(class))
+
+train_data <- breast_rmna \%>\%
+group_by(class) \%>\%
+  group_split() \%>\%
+  map(drop_label,label = "class")
+
+test_data <- breast_rmna \%>\%
+  mutate(class = (1:length(class))) \%>\%
+  group_by(class) \%>\%
+  group_split() \%>\%
+  map(drop_label,label = "class")
+
+predict_nolabel <- test_data \%>\%
+  map_dbl(dist_discri,train_data = train_data,Sig_equal = FALSE)
+predict1 <- ifelse(predict_nolabel == 1,2,4) \%>\% as.factor()
+caret::confusionMatrix(predict1,breast_rmna$class)
+}

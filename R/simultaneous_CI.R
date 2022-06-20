@@ -5,6 +5,10 @@
 #' @param X a matrix or dataframe, the observation data.
 #' @param method string, "B" for Bonferroni method and "S" for Scheffe method.
 #' @param alpha number, the confidence level.
+#' @examples
+#' # calculate the simultaneous CI for the means of three variables in sweat dataset
+#' simultaneous_CI(sweat, method = "B")
+#' simultaneous_CI(sweat, method = "S")
 #' @export
 simultaneous_CI <- function(X, method = "B",alpha = 0.05){
   Xbar <- apply(X,2,mean)

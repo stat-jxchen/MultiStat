@@ -1,11 +1,33 @@
-#' Single or Bivariate Population Covariance Matrix Test
+#' Single Population Covariance Matrix Test
 #'
-#' This function carries out hypothesis test for the covariance matrices of one or two multivariate normal distributions.
+#' This function carries out hypothesis test for the covariance matrix of a multivariate normal distributions.
 #'
 #' @param X a matrix or a data frame which denotes a sample.
 #' @param Sig0_type a character denotes the type of covariance matrix of null
 #' hypothesis.
 #' @param Sig0 a matrix denotes the covariance matrix under null hypothesis.
+#' @examples
+#' # for general case: Sigma = Sigma0
+#' mu <- c(10,20,30)
+#' sig <- diag(c(2,5,9))
+#' sim_time <- 1000
+#' pvalue <- numeric(sim_time)
+#' for (i in seq_len(sim_time)) {
+#' X <- MASS::mvrnorm(n = 200, mu = mu, Sigma = sig)
+#' re <- mvnorm_var_test(X, Sig0_type = "general", Sig0 = sig)
+#' pvalue[i] <- as.vector(re$pvalue)
+#' }
+#' sum(pvalue<0.05)/sim_time
+#' # for sphere case: Sigma = sigma^2*Sigma0
+#' sigma2 <- 1.5
+#' sim_time <- 1000
+#' pvalue <- numeric(sim_time)
+#' for (i in seq_len(sim_time)) {
+#' X <- MASS::mvrnorm(n = 200, mu = mu, Sigma = sig*sigma2)
+#' re <- mvnorm_var_test(X, Sig0_type = "sphere", Sig0 = sig)
+#' pvalue[i] <- as.vector(re$pvalue)
+#' }
+#' sum(pvalue<0.05)/sim_time
 #' @export
 mvnorm_var_test <- function(X, Sig0_type, Sig0){
   n <- nrow(X)
@@ -21,7 +43,7 @@ mvnorm_var_test <- function(X, Sig0_type, Sig0){
     cat("chisq-statistic = ", statistic, "df = ", p*(p+1)/2, "p-value = ", pvalue, "\n")
     cat("alternative hypothesis: true covariance matrix is not equal to Sig0","\n")
     invisible(list(statistic = statistic, pvalue = pvalue))
-  }else if(Sig0_type == "prop"){
+  }else if(Sig0_type == "sphere"){
     miditem <- mysolve(Sig0)%*%A
     sigma2_est <- 1/(n*p)*tr(miditem)
     llambda <- (n/2)*log(det(miditem))-(n*p/2)*(log(tr(miditem))-log(p))
@@ -43,6 +65,8 @@ mvnorm_var_test <- function(X, Sig0_type, Sig0){
 #' @param mydata a matrix/data frame/tibble which contains all the data with a variable to
 #' distinguish populations.
 #' @param label a character denotes the name of the distinguish variable.
+#' @examples
+#' mvnorm_multi_var_test(health,"ind")
 #' @export
 mvnorm_multi_var_test <- function(mydata, label){
   group_data <- mydata %>%
@@ -77,6 +101,8 @@ mvnorm_multi_var_test <- function(mydata, label){
 #' @param mydata a matrix/data frame/tibble which contains all the data with a variable to
 #' distinguish populations.
 #' @param label a character denotes the name of the distinguish variable.
+#' @examples
+#' mvnorm_multi_simult_test(health,"ind")
 #' @export
 mvnorm_multi_simult_test <- function(mydata, label){
   group_data <- mydata %>%

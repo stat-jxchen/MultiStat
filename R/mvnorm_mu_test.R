@@ -5,13 +5,14 @@
 #' @param X a matrix or a data frame which denotes a sample.
 #' @param Y a matrix or a data frame which denotes the second sample.
 #' @param mu0 a vector, the value of mu under null hypothesis.
-#' @param Sig0 a matrix or \code{unequal}(only when \code{Y} is not \code{NULL}),
+#' @param Sig0 a matrix or string "unequal (only when \code{Y} is not \code{NULL}),
 #' when it is a matrix, it will be used in test and means covariance matrices are
 #' equal and known, when it is \code{unequal}, it means the covariance matrix of two
 #' population are not equal, and when it is \code{NULL} means covariance matrices
 #' are equal but unknown.
 #' @note When \code{Y} is \code{NULL}, it will carry out one-sample test. If \code{Y}
 #' is not \code{NULL}, \code{mu0} can be \code{NULL}.
+#' @importFrom rlang .data
 #' @examples
 #' # One-Sample Mean Test with Unknown Covariance Matrix
 #' mu0 <- c(4, 50, 10)
@@ -19,6 +20,16 @@
 #' # One-Sample Mean Test with known Covariance Matrix
 #' sig0 <- cov(sweat)
 #' mvnorm_mu_test(sweat,mu0 = mu0, Sig0 = sig0)
+#' # Two-Sample Means Test When Covariance Matrices Are Equal But Unknown
+#' mvnorm_mu_test(X = EconomyJapan, Y = EconomyUSA)
+#' # Two-Sample Means Test When Covariance Matrices Are Equal and Known
+#' X <- rbind(EconomyJapan, EconomyUSA)
+#' Sig0 <- var(X)
+#' mvnorm_mu_test(X = EconomyJapan, Y = EconomyUSA, Sig0 = Sig0)
+#' # Two-Sample Means Test with Unequal and Unknown Covariance Matrix and Unequal Sample Sizes
+#' X <- subset(milk,V4 == "gasoline")[,-4]
+#' Y <- subset(milk,V4 == "diesel")[,-4]
+#' mvnorm_mu_test(X = X, Y = Y, Sig0 = "unequal")
 #' @export
 mvnorm_mu_test <- function(X, Y = NULL, mu0 = NULL, Sig0 = NULL){
   n <- nrow(X)
@@ -70,7 +81,7 @@ mvnorm_mu_test <- function(X, Y = NULL, mu0 = NULL, Sig0 = NULL){
       invisible(list(statistic = statistic, pvalue = pvalue,
                      estimate = list(Xbar = Xbar, Ybar = Ybar, S1 = S1, S2 = S2)))
     }else if(is.matrix(Sig0)){
-      # Two-Sample Means Tests When Covariance Matrices Are Equal and Known
+      # Two-Sample Means Test When Covariance Matrices Are Equal and Known
       statistic <- (n*m/(n+m))*(Xbar-Ybar)%*%solve(Sig0, Xbar-Ybar)
       pvalue <- 1-pchisq(statistic, df = p)
       cat("Two-sample mean test when covariance matrix is equal and known.\n")
@@ -80,7 +91,7 @@ mvnorm_mu_test <- function(X, Y = NULL, mu0 = NULL, Sig0 = NULL){
                      estimate = list(Xbar = Xbar, Ybar = Ybar, S1 = S1, S2 = S2)))
     }else if(Sig0 == "unequal"){
       if(n == m){
-        # Two-Sample Means Tests with Unequal and Unknown Covariance Matrix but Equal Sample Sizes
+        # Two-Sample Means Test with Unequal and Unknown Covariance Matrix but Equal Sample Sizes
         Z <- X - Y
         Sz <- cov(Z)
         Zbar <- apply(Z, 2, mean)
@@ -96,7 +107,7 @@ mvnorm_mu_test <- function(X, Y = NULL, mu0 = NULL, Sig0 = NULL){
                        estimate = list(Xbar = Xbar, Ybar = Ybar, S1 = S1, S2 = S2),
                        construct = list(Z = Z, Zbar = Zbar, Sz = Sz)))
       }else{
-        # Two-Sample Means Tests with Unequal and Unknown Covariance Matrix and Unequal Sample Sizes
+        # Two-Sample Means Test with Unequal and Unknown Covariance Matrix and Unequal Sample Sizes
         if(n<m){
           mid_amout <- 1/sqrt(n*m)*apply(Y[1:n,], 2, sum)
           Z <- X - sqrt(n/m)*Y[1:n,] + matrix(mid_amout - Ybar, n, p, byrow = TRUE)
@@ -135,6 +146,8 @@ mvnorm_mu_test <- function(X, Y = NULL, mu0 = NULL, Sig0 = NULL){
 #' @param mydata a matrix/data frame/tibble which contains all the data with a variable to
 #' distinguish populations.
 #' @param label a character denotes the name of the distinguish variable.
+#' @examples
+#' mvnorm_multi_mu_test(health,"ind")
 #' @export
 mvnorm_multi_mu_test <- function(mydata, label){
   group_data <- mydata %>%

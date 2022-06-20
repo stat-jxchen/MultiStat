@@ -15,4 +15,6 @@
 #' @importFrom stats qf
 #' @importFrom stats pt
 #' @importFrom stats pchisq
+#' @importFrom MASS mvrnorm
+#' @importFrom caret confusionMatrix
 NULL

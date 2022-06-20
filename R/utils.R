@@ -1,8 +1,11 @@
-#' Drop population-distinguishing variables
+#' Drop population-distinguishing variable
+#'
+#' This function drop a variable in a dataframe according to its column name.
+#'
 #' @param mydata a tibble or matrix or dataframe, which contains a variable to show the
 #' population.
 #' @param label a character, the name of the variable to show the population.
-#' @noRd
+#' @export
 drop_label <- function(mydata, label){
   mydata <- select(mydata,-c(label))
   return(mydata)
@@ -34,3 +37,4 @@ mysolve <- function(x){
     return(solve(x))
   }
 }
+

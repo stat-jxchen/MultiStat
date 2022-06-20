@@ -17,3 +17,8 @@ simultaneous_CI(X, method = "B", alpha = 0.05)
 This function estimates simultaneous confidence interval for the mean of a
 multivariate normal distribution with Bonferroni method and Scheffe method.
 }
+\examples{
+# calculate the simultaneous CI for the means of three variables in sweat dataset
+simultaneous_CI(sweat, method = "B")
+simultaneous_CI(sweat, method = "S")
+}

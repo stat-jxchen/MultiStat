@@ -14,3 +14,7 @@ independence_test(X, part)
 \description{
 This function carries out hypothesis test for independence between disjoint groups of covariates.
 }
+\examples{
+# test whether the three variables of sweat dataset are independent.
+independence_test(sweat,c(1,1,1))
+}

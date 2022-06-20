@@ -12,6 +12,29 @@
 #' If \code{train_data} has been given, it will be ignored.
 #' @param Sig_equal logical, which indicates whether the covariance matrix of each
 #' class is equal.
+#' @importFrom rlang .data
+#' @examples
+#' library(dplyr)
+#' library(purrr)
+#' breast_rmna <- breast %>%
+#' na.omit() %>%
+#' mutate(class = as.factor(class))
+#'
+#' train_data <- breast_rmna %>%
+#' group_by(class) %>%
+#'   group_split() %>%
+#'   map(drop_label,label = "class")
+#'
+#' test_data <- breast_rmna %>%
+#'   mutate(class = (1:length(class))) %>%
+#'   group_by(class) %>%
+#'   group_split() %>%
+#'   map(drop_label,label = "class")
+#'
+#' predict_nolabel <- test_data %>%
+#'   map_dbl(dist_discri,train_data = train_data,Sig_equal = FALSE)
+#' predict1 <- ifelse(predict_nolabel == 1,2,4) %>% as.factor()
+#' caret::confusionMatrix(predict1,breast_rmna$class)
 #' @export
 dist_discri <- function(train_data = NULL, x, mu, Sig, Sig_equal = FALSE){
   # known mu, sig
@@ -33,7 +56,7 @@ dist_discri <- function(train_data = NULL, x, mu, Sig, Sig_equal = FALSE){
       if(Sig_equal){
         nj <- train_data %>% map_dbl(nrow)
         n <- sum(nj)
-        Sig_com <- map2(Sig,(nj-1),`*`) %>% Reduce(`+`,.) %>% `/`(n-group_num)
+        Sig_com <- map2(Sig,(nj-1),`*`) %>% Reduce(`+`,.data) %>% `/`(n-group_num)
         Sig <- rep(list(Sig_com),group_num)
       }
     }

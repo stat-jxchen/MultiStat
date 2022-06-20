@@ -8,6 +8,10 @@
 #' class j as class i. If the loss is equal, it could be set to a number.
 #' @param pdf a function, the common form of pdf of each class.
 #' @param para_list a list, each element is an additional single parameter of the pdf.
+#' @examples
+#' {
+#' # ToDo
+#' }
 #' @export
 bayes_discri <- function(x, prior, loss, pdf, para_list){
   # calculate the density of each class at x according to the pdf

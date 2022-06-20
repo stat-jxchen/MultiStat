@@ -3,6 +3,9 @@
 #' This function carries out hypothesis test for independence between disjoint groups of covariates.
 #' @param X a matrix or dataframe, the observation data.
 #' @param part a vector, how covariates are divided in order.
+#' @examples
+#' # test whether the three variables of sweat dataset are independent.
+#' independence_test(sweat,c(1,1,1))
 #' @export
 independence_test <- function(X,part){
   X <- as.matrix(X)

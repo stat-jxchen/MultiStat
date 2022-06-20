@@ -2,7 +2,7 @@
 % Please edit documentation in R/mvnorm_var_test.R
 \name{mvnorm_var_test}
 \alias{mvnorm_var_test}
-\title{Single or Bivariate Population Covariance Matrix Test}
+\title{Single Population Covariance Matrix Test}
 \usage{
 mvnorm_var_test(X, Sig0_type, Sig0)
 }
@@ -15,5 +15,28 @@ hypothesis.}
 \item{Sig0}{a matrix denotes the covariance matrix under null hypothesis.}
 }
 \description{
-This function carries out hypothesis test for the covariance matrices of one or two multivariate normal distributions.
+This function carries out hypothesis test for the covariance matrix of a multivariate normal distributions.
+}
+\examples{
+# for general case: Sigma = Sigma0
+mu <- c(10,20,30)
+sig <- diag(c(2,5,9))
+sim_time <- 1000
+pvalue <- numeric(sim_time)
+for (i in seq_len(sim_time)) {
+X <- MASS::mvrnorm(n = 200, mu = mu, Sigma = sig)
+re <- mvnorm_var_test(X, Sig0_type = "general", Sig0 = sig)
+pvalue[i] <- as.vector(re$pvalue)
+}
+sum(pvalue<0.05)/sim_time
+# for sphere case: Sigma = sigma^2*Sigma0
+sigma2 <- 1.5
+sim_time <- 1000
+pvalue <- numeric(sim_time)
+for (i in seq_len(sim_time)) {
+X <- MASS::mvrnorm(n = 200, mu = mu, Sigma = sig*sigma2)
+re <- mvnorm_var_test(X, Sig0_type = "sphere", Sig0 = sig)
+pvalue[i] <- as.vector(re$pvalue)
+}
+sum(pvalue<0.05)/sim_time
 }

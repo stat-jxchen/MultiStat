@@ -15,3 +15,6 @@ distinguish populations.}
 \description{
 This function carries out hypothesis test for the means of two or more multivariate normal distributions.
 }
+\examples{
+mvnorm_multi_mu_test(health,"ind")
+}

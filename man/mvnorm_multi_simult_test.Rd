@@ -15,3 +15,6 @@ distinguish populations.}
 \description{
 This function carries out simultaneous hypothesis test for the means and covariance matrices of one or two multivariate normal distributions.
 }
+\examples{
+mvnorm_multi_simult_test(health,"ind")
+}

@@ -21,3 +21,8 @@ class j as class i. If the loss is equal, it could be set to a number.}
 \description{
 This function do Bayes discrimination.
 }
+\examples{
+{
+# ToDo
+}
+}
