@@ -2,7 +2,6 @@
 #' @param mydata a tibble or matrix or dataframe, which contains a variable to show the
 #' population.
 #' @param label a character, the name of the variable to show the population.
-#' @export
 #' @noRd
 drop_label <- function(mydata, label){
   mydata <- select(mydata,-c(label))
@@ -11,7 +10,6 @@ drop_label <- function(mydata, label){
 
 #' Calculate the trace of a matrix
 #' @param x a matrix
-#' @export
 #' @noRd
 tr <- function(x){
   return(sum(diag(x)))
@@ -19,7 +17,6 @@ tr <- function(x){
 
 #' Calculate the inverse of matrx
 #' @param x a matrix
-#' @export
 #' @noRd
 mysolve <- function(x){
   if(rcond(x)<=.Machine$double.eps){

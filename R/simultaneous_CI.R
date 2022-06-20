@@ -4,7 +4,7 @@
 #' multivariate normal distribution with Bonferroni method and Scheffe method.
 #' @param X a matrix or dataframe, the observation data.
 #' @param method string, "B" for Bonferroni method and "S" for Scheffe method.
-#' @param a number, the confidence level.
+#' @param alpha number, the confidence level.
 #' @export
 simultaneous_CI <- function(X, method = "B",alpha = 0.05){
   Xbar <- apply(X,2,mean)

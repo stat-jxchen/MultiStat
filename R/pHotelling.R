@@ -5,6 +5,7 @@
 #' @param p the number of order.
 #' @param n the degree of freedom.
 #' @param lower.tail logical; if TRUE (default), probabilities are P(X <= x) otherwise, P(X > x).
+#' @examples pHotelling(2,2,2)
 #' @export
 pHotelling <- function(q, p, n, lower.tail = TRUE){
   f <- (n-p+1)/(n*p)*q

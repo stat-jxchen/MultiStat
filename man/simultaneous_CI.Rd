@@ -11,7 +11,7 @@ simultaneous_CI(X, method = "B", alpha = 0.05)
 
 \item{method}{string, "B" for Bonferroni method and "S" for Scheffe method.}
 
-\item{a}{number, the confidence level.}
+\item{alpha}{number, the confidence level.}
 }
 \description{
 This function estimates simultaneous confidence interval for the mean of a

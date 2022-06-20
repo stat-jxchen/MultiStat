@@ -26,3 +26,11 @@ This function carries out hypothesis test for the means of one or two multivaria
 When \code{Y} is \code{NULL}, it will carry out one-sample test. If \code{Y}
 is not \code{NULL}, \code{mu0} can be \code{NULL}.
 }
+\examples{
+# One-Sample Mean Test with Unknown Covariance Matrix
+mu0 <- c(4, 50, 10)
+mvnorm_mu_test(X = sweat, mu0 = mu0)
+# One-Sample Mean Test with known Covariance Matrix
+sig0 <- cov(sweat)
+mvnorm_mu_test(sweat,mu0 = mu0, Sig0 = sig0)
+}

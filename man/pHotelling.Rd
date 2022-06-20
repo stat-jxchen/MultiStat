@@ -18,3 +18,6 @@ pHotelling(q, p, n, lower.tail = TRUE)
 \description{
 Calculate the value of the distribution function of the Hotelling distribution.
 }
+\examples{
+pHotelling(2,2,2)
+}
